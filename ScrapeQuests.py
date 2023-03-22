@@ -17,48 +17,48 @@ for trader in traders:
     if trader.text != "Fence":
         tradersList.append(trader.text)
 
-taskURLs = {traderName: [] for traderName in tradersList}
+questURLs = {traderName: [] for traderName in tradersList}
 for traderName in tradersList:
     driver.get("https://wikiwiki.jp/eft/" + traderName)
-    tasks = driver.find_elements(
+    quests = driver.find_elements(
         By.XPATH, value="//*[@id='content']/ul[1]/li/a")
-    for task in tasks:
-        taskURLs[traderName].append(task.get_attribute("href"))
+    for quest in quests:
+        questURLs[traderName].append(quest.get_attribute("href"))
 
 spreadsheetsData = ""
-taskCount = {traderName: {"allCount": 0, "validCount": 0}
-             for traderName in tradersList}
-errorTaskPages = []
+questCount = {traderName: {"allCount": 0, "validCount": 0}
+              for traderName in tradersList}
+errorQuestPages = []
 for traderName in tradersList:
     spreadsheetsData += traderName + "\n"
-    for taskURL in taskURLs[traderName]:
-        taskCount[traderName]["allCount"] += 1
-        driver.get(taskURL)
+    for questURL in questURLs[traderName]:
+        questCount[traderName]["allCount"] += 1
+        driver.get(questURL)
         try:
-            taskName = driver.find_element(
+            questName = driver.find_element(
                 By.XPATH, value="//*[@id='title']/h1").text
-            if "/" in taskName:
-                taskName = taskName[taskName.index("/") + 1:]
+            if "/" in questName:
+                questName = questName[questName.index("/") + 1:]
             kappaRequired = driver.find_element(
                 By.XPATH, value="//*[@id='content']//td[contains(text(), 'Kappaタスク')]/following-sibling::td[1]").text
         except:
-            errorTaskPages.append(taskURL)
+            errorQuestPages.append(questURL)
             continue
-        taskCount[traderName]["validCount"] += 1
-        spreadsheetsData += taskName + "\t" + kappaRequired + "\n"
+        questCount[traderName]["validCount"] += 1
+        spreadsheetsData += questName + "\t" + kappaRequired + "\n"
 
 for traderName in tradersList:
-    print(traderName + "'s AllTaskPage: " +
-          str(taskCount[traderName]["allCount"]))
-    print(traderName + "'s ValidTaskPage: " +
-          str(taskCount[traderName]["validCount"]))
+    print(traderName + "'s AllQuestPage: " +
+          str(questCount[traderName]["allCount"]))
+    print(traderName + "'s ValidQuestPage: " +
+          str(questCount[traderName]["validCount"]))
 
 print("エラータスクページ：", end="")
-for i, errorTaskPage in enumerate(errorTaskPages):
-    if i == len(errorTaskPages) - 1:
-        print(errorTaskPage)
+for i, errorQuestPage in enumerate(errorQuestPages):
+    if i == len(errorQuestPages) - 1:
+        print(errorQuestPage)
     else:
-        print(errorTaskPage, end=", ")
+        print(errorQuestPage, end=", ")
 
 pyperclip.copy(spreadsheetsData)
 print("スプレッドシート用のデータをクリップボードにコピーしました。")
