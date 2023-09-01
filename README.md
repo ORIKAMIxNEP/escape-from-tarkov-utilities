@@ -1,1 +1,1 @@
-# EscapeFromTarkovUtilities
+# escape-from-tarkov-utilities
