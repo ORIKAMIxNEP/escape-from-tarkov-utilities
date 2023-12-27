@@ -8,6 +8,7 @@ const imageList = [
   "reserve",
   "streets_of_tarkov",
   "lighthouse",
+  "ground_zero",
   "Laboratory",
 ];
 for (let i = 0; i < imageList.length; i++) {
