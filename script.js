@@ -9,7 +9,7 @@ const imageList = [
   "streets_of_tarkov",
   "lighthouse",
   "ground_zero",
-  "Laboratory",
+  "laboratory",
 ];
 for (let i = 0; i < imageList.length; i++) {
   document.getElementById("select_bar").innerHTML +=
